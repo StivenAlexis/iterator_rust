@@ -18,3 +18,20 @@ fn iterator_test() {
     
 }
 
+#[test]
+fn iterator_intensive_test() {
+    let mut task_list = TaskList::new();
+    for i in 0..1000 {
+    task_list.add_task(Task {id:i, description: "".to_string() });
+    
+    }
+    let mut iterator = task_list.get_iterator();
+    let mut id_expected = 0;
+    
+    while let Some(task) = iterator.next() {
+       
+        assert_eq!(task.id, id_expected);
+        id_expected= id_expected + 1;
+    }
+}
+

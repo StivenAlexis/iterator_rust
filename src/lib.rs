@@ -4,12 +4,13 @@ pub struct Task {
     pub description: String,
 
 }
-
+//implementamos la interfaz Aggregade 
 pub trait Aggregade {
     fn get_iterator(&self) -> TaskIterator;
     fn get_reverse_iterator(&self) -> ReverseTaskIterator;
     fn get_middle_to_left_iterator(&self) -> MiddleToLeftTaskIterator;
     fn get_middle_to_right_iterator(&self) -> MiddleToRightTaskIterator;
+    fn get_generic_iterator<'a, L>(&'a self) -> GenericIterator;
     
     
 }
@@ -18,7 +19,7 @@ pub struct TaskList {
     tasks: Vec<Task>,
 }
 
-
+//definimos los metodos para TaskList
 impl TaskList {
     pub fn new() -> Self {
         Self { tasks: Vec::new() }
@@ -30,6 +31,7 @@ impl TaskList {
     
 }
 
+//implementamos la interfaz Aggregade para TaskList
 impl Aggregade for TaskList {
     
     fn get_iterator(&self) -> TaskIterator {
@@ -47,7 +49,20 @@ impl Aggregade for TaskList {
     fn get_middle_to_right_iterator(&self) -> MiddleToRightTaskIterator {
         MiddleToRightTaskIterator { task_list: self, index: 0 }
     }
+    
+    fn get_generic_iterator<'a, L>(&'a self) -> GenericIterator { 
+        
+        GenericIterator{
+            task_list: self,
+            index: 0,
+            list_type: L,}
+     }
+
 }
+    
+
+    
+
 
 
 
@@ -71,12 +86,17 @@ impl<'a> Iterator for TaskIterator<'a> {
     }
 }
 
-// Define a new iterator that iterates over the tasks in reverse order
+
+
+
+
+//definimos la clase ReverseTaskIterator para TaskList
 pub struct ReverseTaskIterator<'a> {
     task_list: &'a TaskList,
     index: usize,
 }
 
+//definimos el metodo next para ReverseTaskIterator
 impl<'a> Iterator for ReverseTaskIterator<'a> {
     type Item = &'a Task;
 
@@ -93,12 +113,13 @@ impl<'a> Iterator for ReverseTaskIterator<'a> {
 }
 
 
-// Define a new iterator that iterates over the tasks from the middle to the left
+//definimos la clase MiddleToLeftTaskIterator para TaskList
 pub struct MiddleToLeftTaskIterator<'a> {
     task_list: &'a TaskList,
     index: usize,
 }
 
+//definimos el metodo next para MiddleToLeftTaskIterator
 impl<'a> Iterator for MiddleToLeftTaskIterator<'a> {
     type Item = &'a Task;
 
@@ -114,12 +135,13 @@ impl<'a> Iterator for MiddleToLeftTaskIterator<'a> {
     }
 }
 
-// Define a new iterator that iterates over the tasks from the middle to the right
+//definimos la clase MiddleToRightTaskIterator para TaskList
 pub struct MiddleToRightTaskIterator<'a> {
     task_list: &'a TaskList,
     index: usize,
 }
 
+//definimos el metodo next para MiddleToRightTaskIterator
 impl<'a> Iterator for MiddleToRightTaskIterator<'a> {
     type Item = &'a Task;
 
@@ -135,5 +157,7 @@ impl<'a> Iterator for MiddleToRightTaskIterator<'a> {
     }
 }
 
+
 #[cfg(test)]
 mod tests;
+
