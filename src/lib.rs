@@ -10,8 +10,7 @@ pub trait Aggregade {
     fn get_reverse_iterator(&self) -> ReverseTaskIterator;
     fn get_middle_to_left_iterator(&self) -> MiddleToLeftTaskIterator;
     fn get_middle_to_right_iterator(&self) -> MiddleToRightTaskIterator;
-    fn get_generic_iterator<'a, L>(&'a self) -> GenericIterator;
-    
+
     
 }
 //definimos la clase TaskList
@@ -49,14 +48,7 @@ impl Aggregade for TaskList {
     fn get_middle_to_right_iterator(&self) -> MiddleToRightTaskIterator {
         MiddleToRightTaskIterator { task_list: self, index: 0 }
     }
-    
-    fn get_generic_iterator<'a, L>(&'a self) -> GenericIterator { 
-        
-        GenericIterator{
-            task_list: self,
-            index: 0,
-            list_type: L,}
-     }
+  
 
 }
     
